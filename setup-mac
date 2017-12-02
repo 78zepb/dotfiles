@@ -1,0 +1,123 @@
+#!/bin/bash
+set -e
+
+# macOS development setup
+#
+# First install xcode on your system
+# Run this script to install and setup basic tools on a machine.
+# Or run it to update current setup to latest changes.
+# Steal the bits you like and adjust it to your needs.
+
+# Run in dotfiles folder
+cd "$(dirname "${BASH_SOURCE}")"
+
+# Become super user before starting work
+sudo -v
+
+# Install command line tools
+/usr/bin/xcode-select --install || true
+
+# Agree to the Xcode license
+xcodebuild -license accept || true
+
+printf "\nSetting up system with latest software ...\n\n"
+
+# Create folders
+mkdir -p \
+  ~/bin \
+  ~/projects/personal \
+  ~/projects/work
+
+
+# Create Symlinks
+link_to() {
+  if [ ! -e $2 ]
+  then
+    ln -s $1 $2
+    printf "\nLinked $2"
+  fi
+}
+link_dotfile() {
+  link_to $(pwd)/$1 ~/.$1
+}
+
+link_dotfile bashrc
+link_dotfile bash_profile
+link_dotfile gitconfig
+link_dotfile gemrc
+link_dotfile gitignore
+
+printf "\nUpdating macOS\n"
+# checks for updates
+sudo softwareupdate -l
+# installs them
+sudo softwareupdate -i -a
+
+# Brew
+if ! type "brew" > /dev/null; then
+  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
+
+printf "\nInstalling Brew formulas\n"
+brew update
+brew upgrade
+
+# Install new taps from ./brew.txt
+comm -23 \
+  <(sort brew.txt) \
+  <( \
+    { \
+      brew ls --full-name; \
+      brew cask ls | sed -e 's#^#Caskroom/cask/#'; \
+    } \
+    | sort \
+  ) \
+  | xargs brew install
+
+# Remove old taps
+comm -13 <(sort brew.txt) <(brew leaves | sort) \
+  | xargs brew rm
+
+# Remove old cask taps
+comm -13 \
+  <(sort brew.txt) \
+  <(brew cask ls | sed -e 's#^#Caskroom/cask/#') \
+  | xargs brew cask rm
+
+brew cleanup
+
+# Atom packages
+if type apm > /dev/null; then
+  printf "\nInstalling atom packages \n"
+  apm install --packages-file atom-packages.list
+fi
+
+# Rvm
+if ! type rvm > /dev/null; then
+  printf "\nInstalling rvm\n"
+  gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+  curl -sSL https://get.rvm.io | bash -s stable --ruby
+fi
+
+# Nvm
+if [ -z "$NVM_DIR" ]; then
+  printf "\nInstalling nvm\n"
+  wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
+fi
+
+if ! type composer > /dev/null; then
+  printf "\nInstalling composer\n"
+  php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+  php -r "if (hash_file('SHA384', 'composer-setup.php') === '544e09ee996cdf60ece3804abc52599c22b1f40f4323403c44d44fdfdd586475ca9813a858088ffbc1f233e9b180f061') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+  php composer-setup.php
+  php -r "unlink('composer-setup.php');"
+  mv composer.phar /usr/local/bin/composer
+  chmod +x /usr/local/bin/composer
+fi
+
+if [ "$SHELL" != "/bin/zsh" ]; then
+  printf "\nInstalling oh-my-zsh\n"
+  sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+fi
+
+printf "\n\nAll done.\n"

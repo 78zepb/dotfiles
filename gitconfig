@@ -1,0 +1,21 @@
+[user]
+	name = Bryan Perez
+	email = dev.bpez@gmail.com
+[push]
+	default = matching
+[core]
+  # Use custom `.gitignore`
+  excludesfile = ~/.gitignore
+[alias]
+	c = checkout
+	cb = checkout -b
+	cm = !git add --all && git commit -m
+	rh = reset HEAD --hard
+	rb = rebase -i
+	s = status
+	m = merge
+	po = push origin
+	bd  = branch -d
+	branches = branch -a
+	tags = tag -l
+	remotes = remote -v
