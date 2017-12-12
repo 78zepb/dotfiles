@@ -5,11 +5,11 @@ autocomplete-paths@2.12.1
 autocomplete-python@1.10.5
 busy-signal@1.4.3
 django-templates@0.5.0
-docblockr@0.13.2
+docblockr@0.13.3
 editorconfig@2.2.2
 file-icons@2.1.14
 intentions@1.1.5
-language-blade@0.37.0
+language-blade@0.38.0
 language-docker@1.1.8
 language-elixir@0.20.3
 language-ini@1.19.0
@@ -19,7 +19,7 @@ linter-php@1.5.1
 linter-ruby@1.2.6
 linter-ui-default@1.6.10
 php-cs-fixer@4.1.1
-php-debug@0.2.5
+php-debug@0.2.6
 php-integrator-autocomplete-plus@1.6.1
 php-integrator-base@3.1.0
 project-manager@3.3.5
