@@ -17,6 +17,7 @@ pyenv
 httpie
 gmp
 gnupg
+openssl
 homebrew/php/php-cs-fixer
 homebrew/php/php72
 homebrew/php/php72-pdo-pgsql
