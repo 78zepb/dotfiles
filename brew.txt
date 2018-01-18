@@ -18,6 +18,7 @@ httpie
 gmp
 gnupg
 openssl
+pcre
 homebrew/php/php-cs-fixer
 homebrew/php/php72
 homebrew/php/php72-pdo-pgsql
