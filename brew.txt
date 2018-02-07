@@ -44,3 +44,4 @@ Caskroom/cask/iterm2
 Caskroom/cask/slack
 Caskroom/cask/dropbox
 Caskroom/cask/sequel-pro
+Caskroom/cask/visual-studio-code
