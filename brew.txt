@@ -26,6 +26,8 @@ homebrew/php/php72-xdebug
 homebrew/php/php72-mongodb
 homebrew/php/php72-redis
 zsh-completions
+Caskroom/cask/visual-studio-code
+Caskroom/cask/hyper
 Caskroom/cask/docker
 Caskroom/cask/flux
 Caskroom/cask/google-chrome
