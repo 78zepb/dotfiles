@@ -8,6 +8,7 @@ postgresql
 mysql
 ffmpeg
 htop
+awscli
 imagemagick
 yarn
 zsh
